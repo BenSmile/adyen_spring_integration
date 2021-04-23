@@ -1,0 +1,26 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+  <title>Checkout</title>
+</head>
+<body>
+<div layout:fragment="content" class="payment-page">
+  <div class="container"  style="margin-top: 100px">
+    <div id="clientKey" class="hidden" th:text="${clientKey}"></div>
+    <!-- The Checkout integration type will be rendered below.-->
+    <!-- Drop-in includes styling out-of-the-box, so no additional styling is needed. -->
+    <div class="payment-container">
+      <div id="dropin" class="payment"></div>
+    </div>
+  </div>
+
+  <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/4.1.0/adyen.js"
+          integrity="sha384-3tEepwhhMcyxgIbL3HBe3I59BpSMNyKoNrbKWARYH1tJ7K7K6NdTDqOltKlwiVsH"
+          crossorigin="anonymous"></script>
+
+  <script src="/js/adyen-implemnentation.js" type="application/javascript"></script>
+
+</div>
+</body>
