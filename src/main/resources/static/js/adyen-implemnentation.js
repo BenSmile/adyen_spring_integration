@@ -8,7 +8,7 @@ async function initCheckout() {
     const config = {
       paymentMethodsResponse,
       clientKey,
-      local: 'us_US',
+      local: 'en_US',
       environment: 'test',
       showPayButton: true,
       paymentMethodsConfiguration: {
@@ -18,16 +18,18 @@ async function initCheckout() {
         card: {
           hasHolderName: true,
           holdernameRequired: true,
-
           name: "Credit or debit card",
           amount: {
-            value: 10,
+            value: 1000,
             currency: 'EUR'
           }
         }
       },
-      onsubmit: (state, component) => {
+      onSubmit: (state, component) => {
 
+        if (state.isValid) {
+          handleSubmission(state, component, '/api/initiatePayment')
+        }
       },
       onAdditionalDetails: (state, component) => {
 
@@ -58,6 +60,47 @@ async function callServer(url, data) {
   });
 
   return await res.json();
+}
+
+async function handleSubmission(state, component, url) {
+
+
+  try {
+
+    const res = await callServer(url, state.data);
+    handleServerResponse(res, component);
+  } catch (error) {
+    console.log(error)
+    alert("Error occured. Look at the console for more details")
+  }
+}
+
+function handleServerResponse(res, component) {
+
+  if (res.action) {
+    component.handleAction(res.action)
+  } else {
+
+    switch (res.resultCode) {
+      case 'Authorised':
+        window.location.href = '/result/succes'
+        break;
+      case 'Pending':
+      case 'Received':
+        window.location.href = '/result/pending';
+        break;
+
+      case 'Refused':
+        window.location.href = '/result/failed'
+        break;
+
+      default:
+        window.location.href = '/result/error';
+        break;
+
+    }
+
+  }
 }
 
 initCheckout();
