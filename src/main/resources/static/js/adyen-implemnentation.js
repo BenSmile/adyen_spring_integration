@@ -32,6 +32,7 @@ async function initCheckout() {
         }
       },
       onAdditionalDetails: (state, component) => {
+        handleSubmission(state, component, '/api/submitAddtionnalDetails')
 
       }
     };
